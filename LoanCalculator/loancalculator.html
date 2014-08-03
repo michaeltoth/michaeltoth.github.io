@@ -1,0 +1,40 @@
+<html>
+<head>
+	<title>Loan Prepayment Calculator</title>
+	<link href="prepaystyle.css" media="screen" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="prepayments.js"></script>
+</head>
+
+<body>
+	<div class="header">
+		<div class="headerContent">
+			<a href="../index.html">Home</a>
+			<h2>Loan Prepayment Calculator</h2>
+		</div>
+	</div>
+	<div class="container">
+		<p> This loan prepayment calculator will calculate your savings from various types of prepayments that you can make on amortizing loans.  This calculator applies to mortgages, student loans, car loans, and any other loans that amortize on a fixed-payment schedule.</p>
+		
+		<form>
+			<br>
+			<div>Current Balance Outstanding<input type="number" name="initBalance" id="initBalance"></div>
+			<div>Interest Rate<input type="number" name="rate" id="rate"></div>
+			<div>Loan Term Remaining in Months<input type="number" name="term" id="term"></div>
+			<div>Additional Monthly Payment<input type="number" name="prepay" id="prepay"></div>
+			<br>
+		</form>
+		
+		<button type="button" onclick="Calculate()">Calculate</button><br>
+		
+		<p id = "savings"></p>
+		
+		<p class="output" id = "month"><span class="colHeader"></span></p>
+		<p class="output" id = "balOut"><span class="colHeader"></span></p>
+		<p class="output" id = "intOut"><span class="colHeader"></span></p>
+		<p class="output" id = "prinOut"><span class="colHeader"></span></p>
+		<p class="output" id = "preOut"><span class="colHeader"></span></p>
+		<p class="output" id = "cfOut"><span class="colHeader"></span></p>
+	</div>
+
+</body>
+</html>

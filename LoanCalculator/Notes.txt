@@ -1,0 +1,25 @@
+I've wanted to do this project for a while.  In my job we spend a lot of time modeling these types of cashflows from the bank/investor side, and I thought that this was a good opportunity to create an application from the consumer side.  
+
+Stared with basic HTML, essentially a series of inputs and then a few paragraps at the bottom that I shaped into columns with some CSS and linebreaks inserted through javascript
+
+CSS talk about how I to resize height
+
+Javascript I formatted this as a series of arrays which were added to using loops.
+
+I wanted to split the code into various functions for readability and encapsulation purposes, but then I faced the issue of having to pass the six array variables from function to function, which I thought would be annoying.  Then I realized that I could create an object that contained all of the arrays, and simply pass the object around.  This also made it easier for me to include both "base" and "aggressive" cases, which is what the goal of the project really was.  This was much cleaner.  In addition, this allowed me to separately encapsulate the function that read in the inputs, which made for a cleaner code as well.
+
+
+
+
+
+
+
+todo:
+
+Learn CSS to resize window height
+Calculations for gain from prepayments
+Make it look better
+Finish blog post
+Create blog
+Publish blog
+Set up GIthub

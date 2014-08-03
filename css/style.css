@@ -1,0 +1,41 @@
+.header {
+	background-color: #f7f7f7;
+	border-bottom: 1px solid #dbdbdb;
+	margin-bottom: 20px;
+}
+
+.header a {
+	color: #5a5a5a;
+	font-size: 11px;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+.projects h3 {
+	text-align: center;
+	margin-bottom: 30px;
+}
+
+.projects p {
+	font-size: 11px;
+	font-weight: bold;
+	text-align: center;
+}
+
+.nav {
+	display: inline;
+	line-height: 55px;
+}
+
+.full-projects h3 {
+	text-align: center;
+	margin-bottom: 30px;
+}
+
+.full-projects p {
+	font-size: 11px;
+}
+
+.caption {
+	margin-bottom: 40px;
+}

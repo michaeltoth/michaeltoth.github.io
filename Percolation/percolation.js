@@ -19,10 +19,50 @@ function draw() {
     
 }
 
-// Declare namespace:
-var Percolation = new function() {
 
+/*
+// Declare Percolation namespace:
+function Percolation(N) {
+    // Constructor
+    var size = N;
+    var uf = new WeightedQuickUnionUF(N*N+2);
+    var topUF = new WeightedQuickUnionUF(N*N+2);
+    // opened = 2d boolean array of size N initialized to false;
+
+    var xyTo1D = function(i, j) {
+        return size * (i - 1) + j;
+    }
+
+    var checkBounds = function(i, j) {
+        return 0;
+        //throwing exception in JS?
+    }
+
+    this.open(i, j) {
+        //checkBounds(i,j);
+        //opened[i,j] = true;
+        //series of if statements to connect to neighbors
+        return 0;
+    }
+
+    this.isOpen(i, j) {
+        //checkBounds(i,j);
+        //return opened[i, j];
+        return 0;
+    }
+
+    this.isFull(i, j) {
+        //checkBounds(i, j);
+        //return topUF.connected(xyTo1D(i, j), 0);
+        return 0;
+    }
+
+    this.percolates() {
+        //return uf.connected(0, size * size + 1);
+        return 0;
+    }
 }
+
 
 // Declare weighted quick union union-find namespace:
 function WeightedQuickUnionUF(N) {
@@ -41,7 +81,7 @@ function WeightedQuickUnionUF(N) {
         while (p != id[p]) {
             p = id[p];
         }
-        return p
+        return p;
     }
 
     this.union = function(p, q) {
@@ -58,4 +98,4 @@ function WeightedQuickUnionUF(N) {
     }
 
 }
-
+*/

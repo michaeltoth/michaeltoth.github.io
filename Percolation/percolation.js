@@ -2,22 +2,46 @@ function draw() {
     var canvas = document.getElementById('animation');
     var ctx = canvas.getContext('2d');
     var canvasSize = canvas.width; // = height because square canvas assumed
-
-    var N = 20;
-    var gap = 2;
+   
+   
+    var N = 20; 
+    var perc = new Percolation(N);
+    perc.open(1,1);
+    perc.open(2,1);
+    perc.open(3,1);
+    perc.open(3,2);
+    perc.open(5,1);
+    alert(perc.isFull(1,2));
+    
+    var gap = 1;
     var rectSize = Math.floor((canvasSize - gap * (N + 1)) / N);
     var jump = rectSize + gap;
     var gridSize = rectSize * N + gap * (N+1); 
     var start = (canvasSize - gridSize) / 2;
     
-    ctx.fillRect(0, 0, canvasSize, canvasSize);
+    // Helper function to convert row/col nums to grid locations
+    this.loc = function(rowNum) {
+        return start + (rowNum - 1) * jump
+    }
 
-    for (i = 0; i < N; i++) {
-        for (j = 0; j < N; j++) {
-            ctx.clearRect(start + j * jump, start + i * jump, rectSize,rectSize);
+    this.drawGrid = function() {
+        for (var row = 1; row < N + 1; row++) {
+            for (var col = 1; col < N + 1; col++) {
+                if (perc.isFull(row, col)) {
+                    ctx.fillStyle = "blue";
+                    ctx.fillRect(this.loc(col), this.loc(row), rectSize, rectSize);
+                } else if (perc.isOpen(row, col)) {
+                    ctx.fillStyle = "white";
+                    ctx.fillRect(this.loc(col), this.loc(row), rectSize, rectSize);
+                } else {
+                    ctx.fillStyle = "black";
+                    ctx.fillRect(this.loc(col), this.loc(row), rectSize, rectSize);
+                } 
+            }
         }
     }
-    
+
+    drawGrid();
 }
 
 
@@ -48,9 +72,39 @@ function Percolation(N) {
 
     this.open = function(i, j) {
         checkBounds(i, j);
+
+        // Mark open in boolean array:
         opened[xyTo1D(i, j)] = true;
-        //series of if statements to connect to neighbors
-        return 0;
+        
+        // Connect with open neighbors:
+        if (i != 1 && this.isOpen(i - 1, j)) {
+            uf.union(xyTo1D(i, j), xyTo1D(i - 1, j));
+            topUF.union(xyTo1D(1, j), xyTo1D(i - 1, j));
+        }
+        if (i != size && this.isOpen(i + 1, j)) {
+            uf.union(xyTo1D(i, j), xyTo1D(i + 1, j));
+            topUF.union(xyTo1D(1, j), xyTo1D(i + 1, j));
+        }
+        if (j != 1 && this.isOpen(i, j - 1)) {
+            uf.union(xyTo1D(i, j), xyTo1D(i, j - 1));
+            topUF.union(xyTo1D(i, j), xyTo1D(i, j - 1));
+        }
+        if (j != size && this.isOpen(i, j + 1)) {
+            uf.union(xyTo1D(i, j), xyTo1D(i, j + 1));
+            topUF.union(xyTo1D(i, j), xyTo1D(i, j + 1));
+        }
+
+        // If in top or bottom row, connect to virtual sites:
+        if (i === 1) {
+            uf.union(xyTo1D(i, j), 0);
+            topUF.union(xyTo1D(i, j), 0);
+        }
+        if (i === size) {
+            // Don't connect topUF.  Prevents backwash problem
+            uf.union(xyTo1D(i, j), size * size + 1);
+        }
+
+
     }
     
     this.isOpen = function(i, j) {
@@ -114,9 +168,8 @@ function WeightedQuickUnionUF(N) {
 
 
 function test() {
-    var uf = new WeightedQuickUnionUF(10);
-    uf.union(2,3);
-    for (i = 0; i < 10; i++) {
-        alert(uf.find(i));
-    }
+    var perc = new Percolation(3);
+    alert(perc.isOpen(1,1));
+    perc.open(1,1);
+    alert(perc.isOpen(1,1));
 }

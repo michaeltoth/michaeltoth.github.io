@@ -5,64 +5,69 @@ function draw() {
 
     var N = 20;
     var gap = 2;
-    var rectSize = Math.floor((canvasSize-gap*(N+1))/N);
-    var gridSize = rectSize*N + gap*(N+1); 
+    var rectSize = Math.floor((canvasSize - gap * (N + 1)) / N);
+    var jump = rectSize + gap;
+    var gridSize = rectSize * N + gap * (N+1); 
     var start = (canvasSize - gridSize) / 2;
     
-    ctx.fillRect(0,0,canvasSize,canvasSize);
+    ctx.fillRect(0, 0, canvasSize, canvasSize);
 
-    for (i=0; i<N; i++) {
-        for (j=0; j<N; j++) {
-            ctx.clearRect(start+j*(rectSize+gap),start+i*(rectSize+gap),rectSize,rectSize);
+    for (i = 0; i < N; i++) {
+        for (j = 0; j < N; j++) {
+            ctx.clearRect(start + j * jump, start + i * jump, rectSize,rectSize);
         }
     }
     
 }
 
 
-/*
+
 // Declare Percolation namespace:
 function Percolation(N) {
     // Constructor
+    // how to? if ( N <= 0) { throw "Grid size must be > 0"); }
+
     var size = N;
     var uf = new WeightedQuickUnionUF(N*N+2);
     var topUF = new WeightedQuickUnionUF(N*N+2);
-    // opened = 2d boolean array of size N initialized to false;
+    
+    var opened = [];
+    for (var i = 0; i < N * N; i++) {
+        opened[i] = false;
+    }
+
 
     var xyTo1D = function(i, j) {
         return size * (i - 1) + j;
     }
 
     var checkBounds = function(i, j) {
-        return 0;
-        //throwing exception in JS?
+        if (i <= 0 || i > size) { throw "row index i out of bounds"; }
+        if (j <= 0 || j > size) { throw "column index j out of bounds"; }
     }
 
-    this.open(i, j) {
-        //checkBounds(i,j);
-        //opened[i,j] = true;
+    this.open = function(i, j) {
+        checkBounds(i, j);
+        opened[xyTo1D(i, j)] = true;
         //series of if statements to connect to neighbors
         return 0;
     }
-
-    this.isOpen(i, j) {
-        //checkBounds(i,j);
-        //return opened[i, j];
-        return 0;
+    
+    this.isOpen = function(i, j) {
+        checkBounds(i,j);
+        return opened[xyTo1D(i, j)];
     }
 
-    this.isFull(i, j) {
-        //checkBounds(i, j);
-        //return topUF.connected(xyTo1D(i, j), 0);
-        return 0;
+    this.isFull = function(i, j) {
+        checkBounds(i, j);
+        return topUF.connected(xyTo1D(i, j), 0);
     }
 
-    this.percolates() {
-        //return uf.connected(0, size * size + 1);
+    this.percolates = function() {
+        return uf.connected(0, size * size + 1);
         return 0;
     }
 }
-
 
 // Declare weighted quick union union-find namespace:
 function WeightedQuickUnionUF(N) {
@@ -84,10 +89,14 @@ function WeightedQuickUnionUF(N) {
         return p;
     }
 
+    this.connected = function(p, q) {
+        return this.find(p) === this.find(q);
+    }
+
     this.union = function(p, q) {
-        var rootP = find(p);
-        var rootQ = find(q);
-        if (rootP == rootQ) { return; }
+        var rootP = this.find(p);
+        var rootQ = this.find(q);
+        if (rootP === rootQ) { return; }
         
         // make smaller root point to large one
         if (sz[rootP] < sz[rootQ]) {
@@ -97,5 +106,17 @@ function WeightedQuickUnionUF(N) {
         }
     }
 
+} 
+
+
+
+
+
+
+function test() {
+    var uf = new WeightedQuickUnionUF(10);
+    uf.union(2,3);
+    for (i = 0; i < 10; i++) {
+        alert(uf.find(i));
+    }
 }
-*/

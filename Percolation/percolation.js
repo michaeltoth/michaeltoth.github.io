@@ -4,15 +4,15 @@ function draw() {
     var canvasSize = canvas.width; // = height because square canvas assumed
    
    
-    var N = 20; 
+    var N = 30;
+    var count = 0; 
     var perc = new Percolation(N);
-    perc.open(1,1);
-    perc.open(2,1);
-    perc.open(3,1);
-    perc.open(3,2);
-    perc.open(5,1);
-    alert(perc.isFull(1,2));
     
+    while (!perc.percolates()) {
+        openRandom(N, perc);
+        count++;
+    }
+
     var gap = 1;
     var rectSize = Math.floor((canvasSize - gap * (N + 1)) / N);
     var jump = rectSize + gap;
@@ -28,7 +28,7 @@ function draw() {
         for (var row = 1; row < N + 1; row++) {
             for (var col = 1; col < N + 1; col++) {
                 if (perc.isFull(row, col)) {
-                    ctx.fillStyle = "blue";
+                    ctx.fillStyle = "#6699FF";
                     ctx.fillRect(this.loc(col), this.loc(row), rectSize, rectSize);
                 } else if (perc.isOpen(row, col)) {
                     ctx.fillStyle = "white";
@@ -52,24 +52,26 @@ function Percolation(N) {
     // how to? if ( N <= 0) { throw "Grid size must be > 0"); }
 
     var size = N;
-    var uf = new WeightedQuickUnionUF(N*N+2);
-    var topUF = new WeightedQuickUnionUF(N*N+2);
+    var uf = new WeightedQuickUnionUF(N * N + 2);
+    var topUF = new WeightedQuickUnionUF(N * N + 2);
     
     var opened = [];
     for (var i = 0; i < N * N; i++) {
         opened[i] = false;
     }
 
-
+    // Helper function to convert 2 digit references to 1 digit
     var xyTo1D = function(i, j) {
         return size * (i - 1) + j;
     }
 
+    // May not be needed unless I allow freeform input 
     var checkBounds = function(i, j) {
         if (i <= 0 || i > size) { throw "row index i out of bounds"; }
         if (j <= 0 || j > size) { throw "column index j out of bounds"; }
     }
 
+    // Open a new site in the grid
     this.open = function(i, j) {
         checkBounds(i, j);
 
@@ -79,11 +81,11 @@ function Percolation(N) {
         // Connect with open neighbors:
         if (i != 1 && this.isOpen(i - 1, j)) {
             uf.union(xyTo1D(i, j), xyTo1D(i - 1, j));
-            topUF.union(xyTo1D(1, j), xyTo1D(i - 1, j));
+            topUF.union(xyTo1D(i, j), xyTo1D(i - 1, j));
         }
         if (i != size && this.isOpen(i + 1, j)) {
             uf.union(xyTo1D(i, j), xyTo1D(i + 1, j));
-            topUF.union(xyTo1D(1, j), xyTo1D(i + 1, j));
+            topUF.union(xyTo1D(i, j), xyTo1D(i + 1, j));
         }
         if (j != 1 && this.isOpen(i, j - 1)) {
             uf.union(xyTo1D(i, j), xyTo1D(i, j - 1));
@@ -112,11 +114,13 @@ function Percolation(N) {
         return opened[xyTo1D(i, j)];
     }
 
+    // A site is full if a path exists from it to the top
     this.isFull = function(i, j) {
         checkBounds(i, j);
         return topUF.connected(xyTo1D(i, j), 0);
     }
 
+    // System percolates if top and bottom virtual sites are connected
     this.percolates = function() {
         return uf.connected(0, size * size + 1);
         return 0;
@@ -129,8 +133,9 @@ function WeightedQuickUnionUF(N) {
     // Constructor
     var id = [];
     var sz = []; 
+    
     this.count = N;
-    for (i=0; i<N; i++) {
+    for (var i = 0; i < N; i++) {
         id[i] = i; // id[i] = parent of i
         sz[i] = 1; // sz[i] = number of objects in subtree rooted at i
     }
@@ -158,18 +163,22 @@ function WeightedQuickUnionUF(N) {
         } else {
             id[rootQ] = rootP; sz[rootP] += sz[rootQ];
         }
+        this.count--;
     }
 
 } 
 
+// Open a site uniformly at random within the grid
+function openRandom(N, perc) {
+    // Generate random integers between 1 and N
+    var i = Math.floor(Math.random() * N + 1);
+    var j = Math.floor(Math.random() * N + 1);
 
+    if (perc.isOpen(i, j)) {
+        openRandom(N, perc);
+    } else {
+        perc.open(i, j);
+        return;
+    }
 
-
-
-
-function test() {
-    var perc = new Percolation(3);
-    alert(perc.isOpen(1,1));
-    perc.open(1,1);
-    alert(perc.isOpen(1,1));
 }

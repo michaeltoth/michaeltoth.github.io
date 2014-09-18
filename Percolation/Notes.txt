@@ -1,0 +1,34 @@
+-- General Discussion --
+
+Implementation of the percolation problem in Javascript that was covered in
+Robert Sedgewick and Kevin Wayne's Algorithms class on Coursera:
+https://www.coursera.org/course/algs4partI
+
+Union Find Algorithm
+    - Without this testing for percolation does not scale because it requires
+      loops through bottom and top rows of sites
+    - Implementing this makes testing for percolation trivial
+
+HTML canvas experimentation
+
+Design decisions
+
+Additional details on perc:
+http://pages.physics.cornell.edu/~myers/teaching/ComputationalMethods/ComputerExercises/Percolation/Percolation.html 
+
+Additional details on UF:
+http://en.wikipedia.org/wiki/Disjoint-set_data_structure
+http://algs4.cs.princeton.edu/15uf/
+
+-- Challenges --
+
+Porting program from Javascript with well-defined class structures and
+figuring out how this works in JS
+
+Figuring out how to loop through opening sites and draw iteratively to the
+screen
+
+Figuring out the HTML canvas operation
+
+Figuring out multithreading, how to cancel previous run when starting a new
+run, etc

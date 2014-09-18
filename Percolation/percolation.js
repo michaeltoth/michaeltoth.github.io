@@ -3,45 +3,53 @@ function draw() {
     var ctx = canvas.getContext('2d');
     var canvasSize = canvas.width; // = height because square canvas assumed
    
-   
-    var N = 30;
-    var count = 0; 
-    var perc = new Percolation(N);
+    // User inputs:
+    var N = 60; // Should be user input
+    var delay = 50; // Should be user input
     
-    while (!perc.percolates()) {
-        openRandom(N, perc);
-        count++;
-    }
-
-    var gap = 1;
-    var rectSize = Math.floor((canvasSize - gap * (N + 1)) / N);
-    var jump = rectSize + gap;
-    var gridSize = rectSize * N + gap * (N+1); 
-    var start = (canvasSize - gridSize) / 2;
+    var perc = new Percolation(N);
+    var siteSize = Math.floor(canvasSize / N);
+    var firstSiteLocation = (canvasSize - siteSize * N) / 2;
+    
+    var count = 0; // Should output to screen when simulation is finished
     
     // Helper function to convert row/col nums to grid locations
-    this.loc = function(rowNum) {
-        return start + (rowNum - 1) * jump
+    var loc = function(coordinate) {
+        return firstSiteLocation + (coordinate - 1) * siteSize
     }
 
     this.drawGrid = function() {
         for (var row = 1; row < N + 1; row++) {
             for (var col = 1; col < N + 1; col++) {
                 if (perc.isFull(row, col)) {
-                    ctx.fillStyle = "#6699FF";
-                    ctx.fillRect(this.loc(col), this.loc(row), rectSize, rectSize);
+                    ctx.fillStyle = "#6699FF"; // Full sites are blue
+                    ctx.fillRect(loc(col), loc(row), siteSize, siteSize);
                 } else if (perc.isOpen(row, col)) {
-                    ctx.fillStyle = "white";
-                    ctx.fillRect(this.loc(col), this.loc(row), rectSize, rectSize);
+                    ctx.fillStyle = "white";  // Open sites are white
+                    ctx.fillRect(loc(col), loc(row), siteSize, siteSize);
                 } else {
-                    ctx.fillStyle = "black";
-                    ctx.fillRect(this.loc(col), this.loc(row), rectSize, rectSize);
+                    ctx.fillStyle = "black";  // Closed sites are black
+                    ctx.fillRect(loc(col), loc(row), siteSize, siteSize);
                 } 
             }
         }
     }
 
-    drawGrid();
+    // Open random sites and redraw grid until system percolates
+    var checkPerc = function() {
+        if (!perc.percolates()) {
+            openRandom(N, perc);
+            count++;
+            this.drawGrid();
+        } else {
+            clearInterval(drawLag);
+            alert(count);
+        }
+    }
+   
+    // Use setInterval to repeatedly call checkPerc until system percolates 
+    var drawLag = setInterval(checkPerc, delay);
+    drawLag();
 }
 
 

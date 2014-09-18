@@ -3,9 +3,12 @@ function draw() {
     var ctx = canvas.getContext('2d');
     var canvasSize = canvas.width; // = height because square canvas assumed
    
-    // User inputs:
+    // User inputs.  The + forces the values to be numeric:
     var N = +document.getElementById("gridSize").value;
     var delay = +document.getElementById("delay").value;
+
+    // Remove percolation line from last run if it exists
+    document.getElementById("percolates").innerHTML = "";
     
     var perc = new Percolation(N);
     var siteSize = Math.floor(canvasSize / N);
@@ -16,7 +19,9 @@ function draw() {
     var loc = function(coordinate) {
         return firstSiteLocation + (coordinate - 1) * siteSize
     }
-
+    
+    ctx.fillStyle="grey";
+    ctx.fillRect(0,0,canvasSize,canvasSize);
     this.drawGrid = function() {
         for (var row = 1; row < N + 1; row++) {
             for (var col = 1; col < N + 1; col++) {
@@ -42,7 +47,10 @@ function draw() {
             this.drawGrid();
         } else {
             clearInterval(drawLag);
-            alert(count);
+            var percentage = parseFloat((count * 100) / (N * N)).toFixed(2);
+            var outstring = "The system percolates after " + count + " sites. " + 
+            "The percentage of open sites is " + percentage + "%";
+            document.getElementById("percolates").innerHTML = outstring;
         }
     }
    

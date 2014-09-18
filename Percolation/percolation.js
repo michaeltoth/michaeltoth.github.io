@@ -4,13 +4,12 @@ function draw() {
     var canvasSize = canvas.width; // = height because square canvas assumed
    
     // User inputs:
-    var N = 60; // Should be user input
-    var delay = 50; // Should be user input
+    var N = +document.getElementById("gridSize").value;
+    var delay = +document.getElementById("delay").value;
     
     var perc = new Percolation(N);
     var siteSize = Math.floor(canvasSize / N);
     var firstSiteLocation = (canvasSize - siteSize * N) / 2;
-    
     var count = 0; // Should output to screen when simulation is finished
     
     // Helper function to convert row/col nums to grid locations
@@ -23,7 +22,7 @@ function draw() {
             for (var col = 1; col < N + 1; col++) {
                 if (perc.isFull(row, col)) {
                     ctx.fillStyle = "#6699FF"; // Full sites are blue
-                    ctx.fillRect(loc(col), loc(row), siteSize, siteSize);
+                    ctx.fillRect(loc(col), loc(row), siteSize, siteSize); 
                 } else if (perc.isOpen(row, col)) {
                     ctx.fillStyle = "white";  // Open sites are white
                     ctx.fillRect(loc(col), loc(row), siteSize, siteSize);
@@ -35,7 +34,7 @@ function draw() {
         }
     }
 
-    // Open random sites and redraw grid until system percolates
+    // Open random sites and re-draw grid until system percolates
     var checkPerc = function() {
         if (!perc.percolates()) {
             openRandom(N, perc);

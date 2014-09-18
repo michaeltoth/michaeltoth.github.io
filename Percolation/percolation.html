@@ -9,6 +9,7 @@
 	<script type="text/javascript" src="percolation.js"></script>
 </head>
 
+<!--<body>-->
 <body onload="draw()">	
 	
     <div class="header">
@@ -16,11 +17,18 @@
 		    <h3>Percolation Visualization</h3>
 	    </div>
     </div>
+    
+    <form id="inputs">
+        Grid Size (N-by-N grid)    : <input type="text" id="gridSize"><br>
+        Delay between opening (ms) : <input type="text" id="delay"><br>
+        <!--without type='button', the page refreshes on click, which doesn't work-->
+        <button type='button' id="run" onclick="return draw()">Run Simulation</button> 
+    </form>
 
     <canvas id="animation" width="600" height="600">
         Percolation Visualization (include img)
     </canvas>
-
+    
 </body>
 </html>
 

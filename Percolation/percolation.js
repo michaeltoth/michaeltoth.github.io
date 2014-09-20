@@ -59,6 +59,38 @@ function draw() {
     drawLag();
 }
 
+function simulatePercolation(N, delay) {
+// User inputs.  The + forces the values to be numeric:
+    var N = +document.getElementById("gridSize").value;
+    var delay = +document.getElementById("delay").value;
+
+    // Remove percolation line from last run if it exists
+    document.getElementById("percolates").innerHTML = "";
+    
+    var perc = new Percolation(N);
+    var siteSize = Math.floor(canvasSize / N);
+    var firstSiteLocation = (canvasSize - siteSize * N) / 2;
+    var count = 0; // Should output to screen when simulation is finished
+
+    // Open random sites and re-draw grid until system percolates
+    var checkPerc = function() {
+        if (!perc.percolates()) {
+            openRandom(N, perc);
+            count++;
+            this.drawGrid();
+        } else {
+            clearInterval(drawLag);
+            var percentage = parseFloat((count * 100) / (N * N)).toFixed(2);
+            var outstring = "The system percolates after " + count + " sites. " + 
+            "The percentage of open sites is " + percentage + "%";
+            document.getElementById("percolates").innerHTML = outstring;
+        }
+    }
+   
+    // Use setInterval to repeatedly call checkPerc until system percolates 
+    var drawLag = setInterval(checkPerc, delay);
+    drawLag();
+}
 
 
 // Declare Percolation namespace:

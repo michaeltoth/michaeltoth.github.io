@@ -3,15 +3,15 @@
 <html>
 
 <head>
-	<meta charset="utf-8">
-	<title>Michael Toth - Percolation</title>
-	<link rel="stylesheet" href="percolation.css">
-	<script type="text/javascript" src="percolation.js"></script>
+    <meta charset="utf-8">
+    <title>Michael Toth - Percolation</title>
+    <link rel="stylesheet" href="percolation.css">
+    <script type="text/javascript" src="percolation.js"></script>
+    <!--This lets me clear the interval to avoid duplicate runs on refresh"-->
+    <script>var interval = null;</script>
 </head>
 
-<!--<body>-->
-<body> <!--onload="draw()">	-->
-	
+<body> 
     <div class="header">
         <div class="container">
             <h3>Percolation Visualization</h3>
@@ -25,7 +25,7 @@
         Grid Size (N-by-N grid)    : <input type="text" id="gridSize"><br>
         Delay between opening (ms) : <input type="text" id="delay"><br>
         <!--without type='button', the page refreshes on click, which doesn't work-->
-        <button type='button' id="run" onclick="return simulatePercolation()">Run Simulation</button> 
+        <button type='button' onclick="return simulatePercolation()">Run Simulation</button> 
     </form>
 
     <canvas id="animation" width="600" height="600">
@@ -33,7 +33,6 @@
     </canvas>
     
     <p id="percolates"></p>
-        
 </body>
 </html>
 

@@ -31,17 +31,15 @@ function draw(N,perc) {
 }
 
 function simulatePercolation() {
+    // Remove output from last run if it exists
+    document.getElementById("percolates").innerHTML = "";
+    clearInterval(interval);
+    
     // User inputs.  The + forces the values to be numeric:
     var N = +document.getElementById("gridSize").value;
     var delay = +document.getElementById("delay").value;
 
-    // Remove output from last run if it exists
-    document.getElementById("percolates").innerHTML = "";
-    clearInterval(drawLag);
-    
     var perc = new Percolation(N);
-    //var siteSize = Math.floor(canvasSize / N);
-    //var firstSiteLocation = (canvasSize - siteSize * N) / 2;
     var count = 0; // Should output to screen when simulation is finished
 
     var drawPercolation = new draw(N,perc);
@@ -67,7 +65,7 @@ function simulatePercolation() {
             count++;
             drawPercolation.drawGrid();
         } else {
-            clearInterval(drawLag);
+            clearInterval(interval);
             var percentage = parseFloat((count * 100) / (N * N)).toFixed(2);
             var outstring = "The system percolates after opening " + count + 
             " sites. The percentage of open sites is " + percentage + "%";
@@ -76,15 +74,12 @@ function simulatePercolation() {
     }
 
     // Use setInterval to repeatedly call checkPerc until system percolates 
-    var drawLag = setInterval(checkPerc, delay);
-    drawLag();
+    interval = setInterval(checkPerc, delay);
+    interval();
 }
 
-// Declare Percolation namespace:
 function Percolation(N) {
     // Constructor
-    // how to? if ( N <= 0) { throw "Grid size must be > 0"); }
-
     var size = N;
     var uf = new WeightedQuickUnionUF(N * N + 2);
     var topUF = new WeightedQuickUnionUF(N * N + 2);
@@ -161,7 +156,6 @@ function Percolation(N) {
     }
 }
 
-// Declare weighted quick union union-find namespace:
 function WeightedQuickUnionUF(N) {
     
     // Constructor
@@ -199,19 +193,4 @@ function WeightedQuickUnionUF(N) {
         }
         this.count--;
     }
-
 } 
-/*
-// Open a site uniformly at random within the grid
-function openRandom(N, perc) {
-    // Generate random integers between 1 and N
-    var i = Math.floor(Math.random() * N + 1);
-    var j = Math.floor(Math.random() * N + 1);
-
-    if (perc.isOpen(i, j)) {
-        openRandom(N, perc);
-    } else {
-        perc.open(i, j);
-        return;
-    }
-}*/

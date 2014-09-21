@@ -1,22 +1,12 @@
-function draw() {
+function draw(N,perc) {
     var canvas = document.getElementById('animation');
     var ctx = canvas.getContext('2d');
     var canvasSize = canvas.width; // = height because square canvas assumed
-   
-    // User inputs.  The + forces the values to be numeric:
-    var N = +document.getElementById("gridSize").value;
-    var delay = +document.getElementById("delay").value;
-
-    // Remove percolation line from last run if it exists
-    document.getElementById("percolates").innerHTML = "";
-    
-    var perc = new Percolation(N);
     var siteSize = Math.floor(canvasSize / N);
     var firstSiteLocation = (canvasSize - siteSize * N) / 2;
-    var count = 0; // Should output to screen when simulation is finished
     
     // Helper function to convert row/col nums to grid locations
-    var loc = function(coordinate) {
+    function loc(coordinate) {
         return firstSiteLocation + (coordinate - 1) * siteSize
     }
     
@@ -38,46 +28,44 @@ function draw() {
             }
         }
     }
-
-    // Open random sites and re-draw grid until system percolates
-    var checkPerc = function() {
-        if (!perc.percolates()) {
-            openRandom(N, perc);
-            count++;
-            this.drawGrid();
-        } else {
-            clearInterval(drawLag);
-            var percentage = parseFloat((count * 100) / (N * N)).toFixed(2);
-            var outstring = "The system percolates after " + count + " sites. " + 
-            "The percentage of open sites is " + percentage + "%";
-            document.getElementById("percolates").innerHTML = outstring;
-        }
-    }
-   
-    // Use setInterval to repeatedly call checkPerc until system percolates 
-    var drawLag = setInterval(checkPerc, delay);
-    drawLag();
 }
 
-function simulatePercolation(N, delay) {
-// User inputs.  The + forces the values to be numeric:
+function simulatePercolation() {
+    // User inputs.  The + forces the values to be numeric:
     var N = +document.getElementById("gridSize").value;
     var delay = +document.getElementById("delay").value;
 
-    // Remove percolation line from last run if it exists
+    // Remove output from last run if it exists
     document.getElementById("percolates").innerHTML = "";
+    clearInterval(drawLag);
     
     var perc = new Percolation(N);
-    var siteSize = Math.floor(canvasSize / N);
-    var firstSiteLocation = (canvasSize - siteSize * N) / 2;
+    //var siteSize = Math.floor(canvasSize / N);
+    //var firstSiteLocation = (canvasSize - siteSize * N) / 2;
     var count = 0; // Should output to screen when simulation is finished
 
+    var drawPercolation = new draw(N,perc);
+
+    // Open a site uniformly at random within the grid
+    function openRandom() {
+        // Generate random integers between 1 and N
+        var i = Math.floor(Math.random() * N + 1);
+        var j = Math.floor(Math.random() * N + 1);
+
+        if (perc.isOpen(i, j)) {
+            openRandom();
+        } else {
+            perc.open(i, j);
+            return;
+        }
+    }
+
     // Open random sites and re-draw grid until system percolates
-    var checkPerc = function() {
+    function checkPerc() {
         if (!perc.percolates()) {
-            openRandom(N, perc);
+            openRandom();
             count++;
-            this.drawGrid();
+            drawPercolation.drawGrid();
         } else {
             clearInterval(drawLag);
             var percentage = parseFloat((count * 100) / (N * N)).toFixed(2);
@@ -86,12 +74,11 @@ function simulatePercolation(N, delay) {
             document.getElementById("percolates").innerHTML = outstring;
         }
     }
-   
+
     // Use setInterval to repeatedly call checkPerc until system percolates 
     var drawLag = setInterval(checkPerc, delay);
     drawLag();
 }
-
 
 // Declare Percolation namespace:
 function Percolation(N) {
@@ -108,12 +95,12 @@ function Percolation(N) {
     }
 
     // Helper function to convert 2 digit references to 1 digit
-    var xyTo1D = function(i, j) {
+    function xyTo1D(i, j) {
         return size * (i - 1) + j;
     }
 
     // May not be needed unless I allow freeform input 
-    var checkBounds = function(i, j) {
+    function checkBounds(i, j) {
         if (i <= 0 || i > size) { throw "row index i out of bounds"; }
         if (j <= 0 || j > size) { throw "column index j out of bounds"; }
     }
@@ -214,7 +201,7 @@ function WeightedQuickUnionUF(N) {
     }
 
 } 
-
+/*
 // Open a site uniformly at random within the grid
 function openRandom(N, perc) {
     // Generate random integers between 1 and N
@@ -227,5 +214,4 @@ function openRandom(N, perc) {
         perc.open(i, j);
         return;
     }
-
-}
+}*/

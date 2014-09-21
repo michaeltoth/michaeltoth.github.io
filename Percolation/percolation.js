@@ -42,7 +42,7 @@ function simulatePercolation() {
     var perc = new Percolation(N);
     var count = 0; // Should output to screen when simulation is finished
 
-    var drawPercolation = new draw(N,perc);
+    var drawPerc = new draw(N,perc);
 
     // Open a site uniformly at random within the grid
     function openRandom() {
@@ -63,7 +63,7 @@ function simulatePercolation() {
         if (!perc.percolates()) {
             openRandom();
             count++;
-            drawPercolation.drawGrid();
+            drawPerc.drawGrid();
         } else {
             clearInterval(interval);
             var percentage = parseFloat((count * 100) / (N * N)).toFixed(2);
@@ -73,9 +73,27 @@ function simulatePercolation() {
         }
     }
 
-    // Use setInterval to repeatedly call checkPerc until system percolates 
-    interval = setInterval(checkPerc, delay);
-    interval();
+    // Runs a while loop until system percolates then outputs to screen
+    function outputInstantly() {
+        while (!perc.percolates()) {
+            openRandom();
+            count++;
+        }
+        drawPerc.drawGrid();
+        var percentage = parseFloat((count * 100) / (N * N)).toFixed(2);
+        var outstring = "The system percolates after opening " + count + 
+        " sites. The percentage of open sites is " + percentage + "%";
+        document.getElementById("percolates").innerHTML = outstring;
+    }
+
+    // If no delay, draw instantly.  Otherwise, draw with setInterval and delay
+    if (delay === 0) {
+        outputInstantly();
+    } else {
+        // Use setInterval to repeatedly call checkPerc until system percolates 
+        interval = setInterval(checkPerc, delay);
+        interval();
+    }
 }
 
 function Percolation(N) {
@@ -83,7 +101,6 @@ function Percolation(N) {
     var size = N;
     var uf = new WeightedQuickUnionUF(N * N + 2);
     var topUF = new WeightedQuickUnionUF(N * N + 2);
-    
     var opened = [];
     for (var i = 0; i < N * N; i++) {
         opened[i] = false;
@@ -161,12 +178,13 @@ function WeightedQuickUnionUF(N) {
     // Constructor
     var id = [];
     var sz = []; 
-    
-    this.count = N;
     for (var i = 0; i < N; i++) {
         id[i] = i; // id[i] = parent of i
         sz[i] = 1; // sz[i] = number of objects in subtree rooted at i
     }
+
+    // Returns the number of components, which starts at N
+    this.count = N;
 
     // Returns the component id for the component containing site
     this.find = function(p) {
@@ -176,10 +194,12 @@ function WeightedQuickUnionUF(N) {
         return p;
     }
 
+    // Returns true if two elements are part of the same component
     this.connected = function(p, q) {
         return this.find(p) === this.find(q);
     }
 
+    // Connects the components of two elements
     this.union = function(p, q) {
         var rootP = this.find(p);
         var rootQ = this.find(q);

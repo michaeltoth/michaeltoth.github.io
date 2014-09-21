@@ -11,28 +11,30 @@
     <script>var interval = null;</script>
 </head>
 
-<body> 
-    <div class="header">
-        <div class="container">
-            <h3>Percolation Visualization</h3>
+<body>
+    <div id="page-wrap"> 
+        <div class="header">
+            <div id="header-text">
+                <h1>Percolation Visualization</h1>
+            </div>
+            <div id="link-home">
+                <a href="../index.html">Home</a>
+            </div>
         </div>
-        <div class="nav">
-            <a href="../index.html">Home</a>
-        </div>
-    </div>
-    
-    <form id="inputs">
-        Grid Size (N-by-N grid)    : <input type="text" id="gridSize"><br>
-        Delay between opening (ms) : <input type="text" id="delay"><br>
-        <!--without type='button', the page refreshes on click, which doesn't work-->
-        <button type='button' onclick="return simulatePercolation()">Run Simulation</button> 
-    </form>
+        
+        <form id="inputs">
+            Grid Size (N-by-N grid)    : <input type="text" id="gridSize"><br>
+            Delay between opening (ms) : <input type="text" id="delay"><br>
+            <!--without type='button', the page refreshes on click, which doesn't work-->
+            <button type='button' onclick="return simulatePercolation()">Run Simulation</button> 
+        </form>
 
-    <canvas id="animation" width="600" height="600">
-        Percolation Visualization (include img)
-    </canvas>
-    
-    <p id="percolates"></p>
+        <canvas id="animation" width="600" height="600">
+            Percolation Visualization (include img)
+        </canvas>
+        
+        <p id="percolates"></p>
+    </div>
 </body>
 </html>
 

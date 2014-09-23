@@ -1,9 +1,10 @@
+// Draw grid to canvas.  Called repeatedly from simulatePercolation.
 function draw(N,perc) {
     var canvas = document.getElementById('animation');
     var ctx = canvas.getContext('2d');
     var canvasSize = canvas.width; // = height because square canvas assumed
     var siteSize = Math.floor(canvasSize / N);
-    var firstSiteLocation = (canvasSize - siteSize * N) / 2;
+    var firstSiteLocation = (canvasSize - siteSize * N) / 2;  // Centering
     
     // Helper function to convert row/col nums to grid locations
     function loc(coordinate) {
@@ -30,6 +31,7 @@ function draw(N,perc) {
     }
 }
 
+// Main function.  Open sites randomly until percolation, calling draw with each open.
 function simulatePercolation() {
     // Remove output from last run if it exists
     document.getElementById("percolates").innerHTML = "";
@@ -39,10 +41,10 @@ function simulatePercolation() {
     var N = +document.getElementById("gridSize").value;
     var delay = +document.getElementById("delay").value;
 
+    // Creating instances of "classes"
     var perc = new Percolation(N);
-    var count = 0; // Should output to screen when simulation is finished
-
     var drawPerc = new draw(N,perc);
+    var count = 0; // Should output to screen when simulation is finished
 
     // Open a site uniformly at random within the grid
     function openRandom() {
@@ -96,6 +98,7 @@ function simulatePercolation() {
     }
 }
 
+// Percolation system.  Grid begins closed with functions to open sites and check status
 function Percolation(N) {
     // Constructor
     var size = N;
@@ -111,16 +114,8 @@ function Percolation(N) {
         return size * (i - 1) + j;
     }
 
-    // May not be needed unless I allow freeform input 
-    function checkBounds(i, j) {
-        if (i <= 0 || i > size) { throw "row index i out of bounds"; }
-        if (j <= 0 || j > size) { throw "column index j out of bounds"; }
-    }
-
     // Open a new site in the grid
     this.open = function(i, j) {
-        checkBounds(i, j);
-
         // Mark open in boolean array:
         opened[xyTo1D(i, j)] = true;
         
@@ -156,13 +151,11 @@ function Percolation(N) {
     }
     
     this.isOpen = function(i, j) {
-        checkBounds(i,j);
         return opened[xyTo1D(i, j)];
     }
 
     // A site is full if a path exists from it to the top
     this.isFull = function(i, j) {
-        checkBounds(i, j);
         return topUF.connected(xyTo1D(i, j), 0);
     }
 
@@ -173,6 +166,7 @@ function Percolation(N) {
     }
 }
 
+// Union find implementation for efficient checking of percolation
 function WeightedQuickUnionUF(N) {
     
     // Constructor

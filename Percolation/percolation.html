@@ -24,7 +24,10 @@
         
         <form id="inputs">
             Grid Size (N-by-N grid)    : <input type="text" id="gridSize"><br>
-            Delay between opening (ms) : <input type="text" id="delay"><br>
+            Speed: <input type="radio" name="speed" value="instant">Instant
+            <input type="radio" name="speed" value="fast" checked>Fast
+            <input type="radio" name="speed" value="slow">Slow<br>
+            
             <!--without type='button', the page refreshes on click, which doesn't work-->
             <button type='button' onclick="return simulatePercolation()">Run Simulation</button> 
         </form>

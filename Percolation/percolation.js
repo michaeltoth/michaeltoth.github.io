@@ -39,7 +39,15 @@ function simulatePercolation() {
     
     // User inputs.  The + forces the values to be numeric:
     var N = +document.getElementById("gridSize").value;
-    var delay = +document.getElementById("delay").value;
+    var radios = document.getElementsByName('speed');
+    for (var i = 0, length = radios.length; i < length; i++) {
+        if (radios[i].checked) {
+            if (radios[i].value == "instant") { var delay = 0; }
+            else if (radios[i].value == "fast") { var delay = 10; }
+            else if (radios[i].value == "slow") { var delay = 500; }
+            break;
+        }
+    }
 
     // Creating instances of "classes"
     var perc = new Percolation(N);

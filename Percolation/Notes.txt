@@ -26,9 +26,11 @@ Porting program from Javascript with well-defined class structures and
 figuring out how this works in JS
 
 Figuring out how to loop through opening sites and draw iteratively to the
-screen
+screen (while loop is instant, but need delay)
 
 Figuring out the HTML canvas operation
 
-Figuring out multithreading, how to cancel previous run when starting a new
+Figuring out how to cancel previous run when starting a new
 run, etc
+
+General design of the page

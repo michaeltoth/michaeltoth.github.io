@@ -14,22 +14,18 @@
 <body>
     <div id="page-wrap"> 
         <div class="header">
-            <div id="header-text">
-                <h1>Percolation Visualization</h1>
-            </div>
-            <div id="link-home">
-                <a href="../index.html">Home</a>
-            </div>
+            <div id="header-text"><h1>Percolation Visualization</h1></div>
+            <div id="link-home"><a href="../index.html">Home</a></div>
         </div>
         
         <form id="inputs">
-            Grid Size (N-by-N grid)    : <input type="text" id="gridSize"><br>
-            Speed: <input type="radio" name="speed" value="instant">Instant
+            Grid Size (N-by-N grid) : <input type="text" id="gridSize" value="20"><br>
+            Speed : <input type="radio" name="speed" value="instant">Instant
             <input type="radio" name="speed" value="fast" checked>Fast
             <input type="radio" name="speed" value="slow">Slow<br>
             
             <!--without type='button', the page refreshes on click, which doesn't work-->
-            <button type='button' onclick="return simulatePercolation()">Run Simulation</button> 
+            <button type='button' id="button" onclick="return simulatePercolation()">Run Simulation</button> 
         </form>
 
         <canvas id="animation" width="600" height="600">

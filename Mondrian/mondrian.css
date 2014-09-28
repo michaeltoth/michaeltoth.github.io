@@ -5,60 +5,60 @@
 }
 
 .palette #red, .palette #blue, .palette #yellow, .palette #white, .palette #black {
-	border: solid 2px black;
-	height: 50px; width: 50px;
-	margin: 5px;
+    border: solid 2px black;
+    height: 50px; width: 50px;
+    margin: 5px;
 }
 
 .palette #red {
-	background-color: red;
+    background-color: red;
 }
 
 .palette #blue {
-	background-color: #1919FF;
+    background-color: #1919FF;
 }
 
 .palette #yellow {
-	background-color: yellow;
+    background-color: yellow;
 }
 
 .palette #white {
-	background-color: white;
+    background-color: white;
 }
 
 .palette #black {
-	background-color: black;
+    background-color: black;
 }
 
 .palette {
-	border: solid 2px black;
-	margin: 0px 100px 50px 0px;
-	width: 64px;
-	float: left;
+    border: solid 2px black;
+    margin: 0px 100px 50px 0px;
+    width: 64px;
+    float: left;
 }
 
 .palette .container {
-	padding: 0;
-	margin: 0;
+    padding: 0;
+    margin: 0;
 }
 
 .canvas {
-	border: solid 2px black;
-	padding: 10px;
-	float: left;
+    border: solid 2px black;
+    padding: 10px;
+    float: left;
 }
 
 .canvas .container {
-	border: solid 3px black;
-	float: left;
-	padding: 0px;
-	margin: 0px;
-	width: 506px;
+    border: solid 3px black;
+    float: left;
+    padding: 0px;
+    margin: 0px;
+    width: 506px;
 }
 
 h3 {
-	margin: 0px;
-	padding: 0px;
+    margin: 0px;
+    padding: 0px;
 }
 
 .header .container {
@@ -68,15 +68,15 @@ h3 {
 }
 
 .header #link-home {
-	margin: 20px 0px 20px 0px;
+    margin: 20px 0px 20px 0px;
     display: block;
     float: right;
 }
 
 .contents a {
-	float: left;
-	clear: both;
-	margin-top: 50px;
+    float: left;
+    clear: both;
+    margin-top: 50px;
 }
 
 #row1box1 {border: solid 3px black; height: 120px; width: 175px; float:left;}

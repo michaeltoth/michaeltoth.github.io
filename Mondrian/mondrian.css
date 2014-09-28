@@ -1,3 +1,7 @@
+body {
+    font-family: arial, sans-serif;
+}
+
 .page-wrap {
     width: 800px;
     margin: 0 auto;
@@ -32,6 +36,7 @@
 
 .palette {
     border: solid 2px black;
+    border-radius: 10px;
     margin: 0px 100px 50px 0px;
     width: 64px;
     float: left;
@@ -44,31 +49,36 @@
 
 .canvas {
     border: solid 2px black;
+    border-radius: 10px;
     padding: 10px;
     float: left;
 }
 
 .canvas .container {
     border: solid 3px black;
-    float: left;
+    float: right;
     padding: 0px;
     margin: 0px;
-    width: 506px;
+    width: 524px;
 }
 
-h3 {
+.header {
+    overflow: hidden;
+    margin-bottom: 60px;
+}
+
+h1 {
     margin: 0px;
     padding: 0px;
 }
 
-.header .container {
-    margin: 20px 0px 20px 0px;
+.header .header-text {
     display: block;
     float: left;
 }
 
 .header #link-home {
-    margin: 20px 0px 20px 0px;
+    margin-top: 10px;
     display: block;
     float: right;
 }
@@ -79,8 +89,8 @@ h3 {
     margin-top: 50px;
 }
 
-#row1box1 {border: solid 3px black; height: 120px; width: 175px; float:left;}
-#row1box2 {border: solid 3px black; height: 120px; width: 125px; float:left;}
+#row1box1 {border: solid 3px black; height: 120px; width: 181px; float:left;}
+#row1box2 {border: solid 3px black; height: 120px; width: 119px; float:left;}
 #row1box3 {border: solid 3px black; height: 120px; width: 75px; float:left;}
 #row1box4 {border: solid 3px black; height: 120px; width: 125px; float:left;}
 #row2box1 {border: solid 3px black; height: 80px; width: 125px; float:left; clear: both}

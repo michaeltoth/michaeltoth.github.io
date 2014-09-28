@@ -1,3 +1,9 @@
+#page-wrap {
+    width: 1000px;
+    margin: 0 auto;
+    margin-top: 0px;
+}
+
 .palette #red, .palette #blue, .palette #yellow, .palette #white, .palette #black {
 	border: solid 2px black;
 	height: 50px; width: 50px;

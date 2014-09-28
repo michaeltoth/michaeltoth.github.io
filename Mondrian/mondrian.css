@@ -50,8 +50,21 @@
 	width: 506px;
 }
 
+h3 {
+	margin: 0px;
+	padding: 0px;
+}
+
 .header .container {
-	margin-bottom: 20px;
+    margin: 20px 0px 20px 0px;
+    display: block;
+    float: left;
+}
+
+.header #link-home {
+	margin: 20px 0px 20px 0px;
+    display: block;
+    float: right;
 }
 
 .contents a {

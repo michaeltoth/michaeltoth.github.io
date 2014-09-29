@@ -2,15 +2,13 @@
 
 The goal of this article is to discuss the background of the percolation
 visualization page, and the details of my implementation. This is the first non-trivial
-Javascript application I have created, and later in the post I discuss some of the biggest
+Javascript application I've created, and later in the post I discuss some of the biggest
 challenges I faced and things I learned along the way.  I hope to provide a good
-introduction of percolation problems and the union find algorithm and provide
-solutions I found to some challenges to help those who may experience similar
-in the future.
+introduction to basic percolation theory and the union find algorithm in particular.
 
 ##Background
 
-I first learned about the percolation problem and the union find algorithm through Robert Sedgwick's and Kevin Wayne's Algorithm's class on Coursera:  https://www.coursera.org/course/algs4partI.  In that class we implemented a solution in Java, and I thought that it would be an interesting challenge to port that solution to Javascript and create a visualization on my website, so I did.  I built the application with Javascript and used the HTML canvas element to draw the visualization.  This is the first non-trivial Javascript application that I have created, and I've documented the biggest challenges I faced with the implementation later in this post.
+I first learned about the percolation problem and the union find algorithm through Robert Sedgwick's and Kevin Wayne's [Algorithms](https://www.coursera.org/course/algs4partI "Coursera - Algorithms") class on Coursera.  In the class we implemented a solution to the problem in Java, and I thought that it would be an interesting challenge to port that solution to Javascript and create a visualization on my website, so I did.  I built the application with Javascript and used the HTML canvas element to draw the visualization.  
 
 ####Percolation
 
@@ -31,7 +29,49 @@ The find function takes constant time.  By modifying the union function such tha
 
 Code for Union Find implementation in Javascript:
 
-<here>
+```javascript
+function WeightedQuickUnionUF(N) {
+
+// Constructor
+var id = [];
+var sz = []; 
+for (var i = 0; i < N; i++) {
+id[i] = i; // id[i] = parent of i
+sz[i] = 1; // sz[i] = number of objects in subtree rooted at i
+}
+
+// Returns the number of components, which starts at N
+this.count = N;
+
+// Returns the component id for the component containing site
+this.find = function(p) {
+while (p != id[p]) {
+p = id[p];
+}
+return p;
+}
+
+// Returns true if two elements are part of the same component
+this.connected = function(p, q) {
+return this.find(p) === this.find(q);
+}
+
+// Connects the components of two elements
+this.union = function(p, q) {
+var rootP = this.find(p);
+var rootQ = this.find(q);
+if (rootP === rootQ) { return; }
+
+// make smaller root point to large one
+if (sz[rootP] < sz[rootQ]) {
+id[rootP] = rootQ; sz[rootQ] += sz[rootP];
+} else {
+id[rootQ] = rootP; sz[rootP] += sz[rootQ];
+}
+this.count--;
+}
+} 
+```
 	
 Note that the Union Find implementation is efficient for determining whether 2 sites are connected, but this still requires N^2 time if we need to check whether any of the N sites in the top row are connected to any of the N sites in the bottom row.  To address this, we create two "virtual sites" on the top and bottom of the grid which we automatically connect sites on the top and bottom rows as they open.  Then, to determine whether the system percolates we can simply check whether the top and bottom virtual sites are connected using the efficient union find algorithm.
 	
@@ -43,6 +83,28 @@ I had trouble initially with porting the implementation from Java.  In Java, the
 
 Initially I implemented the process of opening sites and drawing to the screen using a while loop, but this was not ideal.  I could run the entire percolation simulation and then draw to the screen, but if I tried drawing to the screen after each site was opened, the browser would freeze.  I wanted to be able to show each site being opened successively, so I needed to find a way to delay the opening of new sites until I could draw to the screen.  I ended up accomplishing this through the use of Javascript's setInterval method.  Ultimately, I added 3 options for timing.  Show code:
 
-<here>
+```javascript
+// Runs a while loop until system percolates then outputs to screen
+function outputInstantly() {
+while (!perc.percolates()) {
+openRandom();
+count++;
+}
+drawPerc.drawGrid();
+var percentage = parseFloat((count * 100) / (N * N)).toFixed(2);
+var outstring = "The system percolates after opening " + count + 
+" sites. The percentage of open sites is " + percentage + "%";
+document.getElementById("percolates").innerHTML = outstring;
+}
+
+// If no delay, draw instantly.  Otherwise, draw with setInterval and delay
+if (delay === 0) {
+outputInstantly();
+} else {
+// Use setInterval to repeatedly call checkPerc until system percolates 
+interval = setInterval(checkPerc, delay);
+interval();
+}
+```
 
 My first implementation suffered from a bug where if I reran the simulation, the first percolation run would continue to run in the background, causing issues with the display and text output to the screen.  I knew that the solution would be to clear the interval on rerun, but I did not know how I could access the id of setInterval, an instance variable of the previous simulatePercolation class instance, when creating a new instance of the percolation class.  After some experimentation, I found that if I declared the interval variable in the head of my HTML, I could assign it to setInterval when running simulatePercolation, which would eliminate the possibility of duplicate intervals running simultaneously.  

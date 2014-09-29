@@ -1,15 +1,25 @@
-Creating the Percolation Visualization Page
+#Creating the Percolation Visualization Page
+
+The goal of this article is to discuss the background of the percolation
+visualization page, and the details of my implementation. This is the first non-trivial
+Javascript application I have created, and later in the post I discuss some of the biggest
+challenges I faced and things I learned along the way.  I hope to provide a good
+introduction of percolation problems and the union find algorithm and provide
+solutions I found to some challenges to help those who may experience similar
+in the future.
+
+##Background
 
 I first learned about the percolation problem and the union find algorithm through Robert Sedgwick's and Kevin Wayne's Algorithm's class on Coursera:  https://www.coursera.org/course/algs4partI.  In that class we implemented a solution in Java, and I thought that it would be an interesting challenge to port that solution to Javascript and create a visualization on my website, so I did.  I built the application with Javascript and used the HTML canvas element to draw the visualization.  This is the first non-trivial Javascript application that I have created, and I've documented the biggest challenges I faced with the implementation later in this post.
 
---Background--
+####Percolation
 
--Percolation-
 The percolation problem takes a grid of sites that can be set to either open or closed.  If we imagine that water is flowing across the top of the grid, an open site will become full with water when it can be connected by other open sites in an unbroken path to the top of the grid.  The system percolates when an open site on the bottom of the grid can be connected by other open sites in an unbroken path to the top of the grid, such that water will flow freely through the system.  
 
 For a large square grid of sites, there exists a percolation threshold probability p such that if we open fewer than p percent of the sites the system will not percolate, and if we open greater than p percent of the sites the system will percolate.  An exact expression for the percolation threshold of a square grid is currently unknown, but we can use experimentation to approximate the value as 0.592746.  That is, for a large square grid, the system should first percolate after we have opened 59.2746% of the sites.
 
--Union Find Algorithm-
+####Union Find Algorithm
+
 Testing for percolation requires checking whether there exists a connection between two sites on the top and bottom of the grid.  A brute-force solution does not scale to large grid sizes, so we need a more efficient implementation.
 	
 The Union Find data structure keeps track of a set of elements partitioned into a number of disjoint subsets (components).  A union find structure of size N is initialized with N disjoint components.  The data structure supports two main operations:
@@ -25,7 +35,7 @@ Code for Union Find implementation in Javascript:
 	
 Note that the Union Find implementation is efficient for determining whether 2 sites are connected, but this still requires N^2 time if we need to check whether any of the N sites in the top row are connected to any of the N sites in the bottom row.  To address this, we create two "virtual sites" on the top and bottom of the grid which we automatically connect sites on the top and bottom rows as they open.  Then, to determine whether the system percolates we can simply check whether the top and bottom virtual sites are connected using the efficient union find algorithm.
 	
--- Challenges --
+##Challenges
 
 Initially I had thought to create the grid of sites using a grid of divs which I would then be able to color according to their status, similar to my previous Mondrian project implementation (link to page).  I wanted to support a variable size of the grid however, and a large number of divs seemed unnecessarily cumbersome.  I did some searching on Codepen.io for ideas, and found some implementations using the HTML5 canvas element.  I ultimately decided to use the canvas element for the implementation, which was perfect for what I needed.  I enjoyed experimenting and figuring out what worked here.
 

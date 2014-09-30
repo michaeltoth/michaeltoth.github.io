@@ -11,8 +11,7 @@
 	text-decoration: none;
 }
 
-.projects h3 {
-	text-align: center;
+.projects h2 {
 	margin-bottom: 30px;
 }
 
@@ -42,3 +41,7 @@
 .caption {
 	margin-bottom: 40px;
 }
+
+.about h2 {
+    margin-bottom: 30px;
+}   

@@ -27,13 +27,16 @@
 	line-height: 55px;
 }
 
-.full-projects h3 {
-	text-align: center;
+.full-projects h2 {
 	margin-bottom: 30px;
 }
 
 .full-projects p {
-	font-size: 11px;
+	font-size: 12px;
+}
+
+.full-projects a {
+    font-size: 18px;
 }
 
 .caption {

@@ -1,10 +1,28 @@
-p	{
+body {
+    width: 1200px
+}
+
+p {
 	color: grey;
 	padding: 10px;
-	}
+}
 
 #Cow {
 	float: right;
+}
+
+h1 {
+    float: left;
+    margin-top: 0px;
+}
+
+a {
+    float: right;
+    margin-top: 10px;
+}
+
+#header {
+    overflow: hidden;
 }
 
 #container {

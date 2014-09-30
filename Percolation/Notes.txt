@@ -30,46 +30,47 @@ The find function takes constant time.  By modifying the union function such tha
 Code for Union Find implementation in Javascript:
 
 ```javascript
+// Union find implementation for efficient checking of percolation
 function WeightedQuickUnionUF(N) {
+    
+    // Constructor
+    var id = [];
+    var sz = []; 
+    for (var i = 0; i < N; i++) {
+        id[i] = i; // id[i] = parent of i
+        sz[i] = 1; // sz[i] = number of objects in subtree rooted at i
+    }
 
-// Constructor
-var id = [];
-var sz = []; 
-for (var i = 0; i < N; i++) {
-id[i] = i; // id[i] = parent of i
-sz[i] = 1; // sz[i] = number of objects in subtree rooted at i
-}
+    // Returns the number of components, which starts at N
+    this.count = N;
 
-// Returns the number of components, which starts at N
-this.count = N;
+    // Returns the component id for the component containing site
+    this.find = function(p) {
+        while (p != id[p]) {
+            p = id[p];
+        }
+        return p;
+    }
 
-// Returns the component id for the component containing site
-this.find = function(p) {
-while (p != id[p]) {
-p = id[p];
-}
-return p;
-}
+    // Returns true if two elements are part of the same component
+    this.connected = function(p, q) {
+        return this.find(p) === this.find(q);
+    }
 
-// Returns true if two elements are part of the same component
-this.connected = function(p, q) {
-return this.find(p) === this.find(q);
-}
-
-// Connects the components of two elements
-this.union = function(p, q) {
-var rootP = this.find(p);
-var rootQ = this.find(q);
-if (rootP === rootQ) { return; }
-
-// make smaller root point to large one
-if (sz[rootP] < sz[rootQ]) {
-id[rootP] = rootQ; sz[rootQ] += sz[rootP];
-} else {
-id[rootQ] = rootP; sz[rootP] += sz[rootQ];
-}
-this.count--;
-}
+    // Connects the components of two elements
+    this.union = function(p, q) {
+        var rootP = this.find(p);
+        var rootQ = this.find(q);
+        if (rootP === rootQ) { return; }
+        
+        // make smaller root point to large one
+        if (sz[rootP] < sz[rootQ]) {
+            id[rootP] = rootQ; sz[rootQ] += sz[rootP];
+        } else {
+            id[rootQ] = rootP; sz[rootP] += sz[rootQ];
+        }
+        this.count--;
+    }
 } 
 ```
 	
@@ -86,24 +87,20 @@ Initially I implemented the process of opening sites and drawing to the screen u
 ```javascript
 // Runs a while loop until system percolates then outputs to screen
 function outputInstantly() {
-while (!perc.percolates()) {
-openRandom();
-count++;
-}
-drawPerc.drawGrid();
-var percentage = parseFloat((count * 100) / (N * N)).toFixed(2);
-var outstring = "The system percolates after opening " + count + 
-" sites. The percentage of open sites is " + percentage + "%";
-document.getElementById("percolates").innerHTML = outstring;
+    while (!perc.percolates()) {
+        openRandom();
+        count++;
+    }
+    drawPerc.drawGrid();
 }
 
 // If no delay, draw instantly.  Otherwise, draw with setInterval and delay
 if (delay === 0) {
-outputInstantly();
+    outputInstantly();
 } else {
-// Use setInterval to repeatedly call checkPerc until system percolates 
-interval = setInterval(checkPerc, delay);
-interval();
+    // Repeatedly call checkPerc to open one-by-one until system percolates 
+    interval = setInterval(checkPerc, delay);
+    interval();
 }
 ```
 

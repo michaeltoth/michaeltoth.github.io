@@ -1,25 +1,38 @@
-Title: Creating the Percolation Visualization Page
-Date: 2014-09-29 19:57
+Title: Creating the Percolation Visualization
+Date: 2014-10-01 21:50
 Authors: Michael Toth
-Summary: The goal of this article is to discuss the background of the percolation
-visualization page, and the details of my implementation. This is the first non-trivial
-Javascript application I've created, and later in the post I discuss some of the biggest
-challenges I faced and things I learned along the way.  I hope to provide a good
-introduction to basic percolation theory and the union find algorithm in particular.
+Modified: 2014-10-01 21:50
+Category: Projects
+Tags: Javascript, Canvas, Projects
+Slug: Percolation
+Summary: The goal of this article is to discuss the background of the
+percolation visualization page, and the details of my implementation. This is
+the first non-trivial Javascript application I've created, and later in the
+post I discuss some of the biggest challenges I faced and things I learned
+along the way.  I hope to provide a good introduction to basic percolation
+theory and the union find algorithm in particular.
 
 The goal of this article is to discuss the background of the percolation
-visualization page, and the details of my implementation. This is the first non-trivial
-Javascript application I've created, and later in the post I discuss some of the biggest
-challenges I faced and things I learned along the way.  I hope to provide a good
-introduction to basic percolation theory and the union find algorithm in particular.
+visualization page, and the details of my implementation. This is the first
+non-trivial Javascript application I've created, and later in the post I discuss some of
+the biggest challenges I faced and things I learned along the way.  I hope to provide a
+good introduction to basic percolation theory and the union find algorithm in particular.
 
 ##Background
 
-I first became interested in the percolation problem and the union find algorithm during Robert Sedgwick's and Kevin Wayne's [Algorithms](https://www.coursera.org/course/algs4partI "Coursera - Algorithms") class on Coursera.  In the class I implemented a Java solution, and afterward I thought that it would be an interesting challenge to port that solution to Javascript and create a visualization on my website.  I use Javascript for all of the calculations for the web version,  and I use the HTML canvas element to draw the visualization to the screen iteratively.
+I first became interested in the percolation problem and the union find
+algorithm during Robert Sedgwick's and Kevin Wayne's
+[Algorithms](https://www.coursera.org/course/algs4partI "Coursera -
+Algorithms") class on Coursera.  In the class I implemented a Java solution,
+and afterward I thought that it would be an interesting challenge to port that
+solution to Javascript and create a visualization on my website.  I use
+Javascript for all of the calculations for the web version,  and I use the
+HTML canvas element to draw the visualization to the screen iteratively.
 
 #### Connectivity and the Union Find Algorithm
 
-A connectivity problem seeks to determine, given a directed graph of sites, whether two particular sites are connected via any path.  For example:
+A connectivity problem seeks to determine, given a directed graph of sites,
+whether two particular sites are connected via any path.  For example:
 
 <Show a graphic here of connected sites>
 
@@ -32,12 +45,19 @@ grouping of components as follows:
 
 <Show a graphic here of connected components>
 
-The Union Find data structure keeps track of a set of elements partitioned into a number of disjoint subsets (components).  A union find structure of size N is initialized with N disjoint components, and the data structure supports two main operations:
+The Union Find data structure keeps track of a set of elements partitioned
+into a number of disjoint subsets (components).  A union find structure of
+size N is initialized with N disjoint components, and the data structure
+supports two main operations:
 
 Find: Return the id of the component to which the given site is a member
-Union: Connect two sites by combining their two components into a single component with the same id
+Union: Connect two sites by combining their two components into a single
+component with the same id
 
-The find function takes constant time.  By modifying the union function such that we always append the smaller component to the larger component, we reduce the maximum depth of the tree and ensure that the algorithm takes O(n*log(n)) in the worst case.  // Include proof based on doubling
+The find function takes constant time.  By modifying the union function such
+that we always append the smaller component to the larger component, we reduce
+the maximum depth of the tree and ensure that the algorithm takes O(n*log(n))
+in the worst case.  // Include proof based on doubling
 
 Code for Union Find implementation in Javascript:
 
@@ -88,22 +108,74 @@ function WeightedQuickUnionUF(N) {
 
 ####Percolation
 
-The percolation problem takes a grid of sites that can be set to either open or closed.  If we imagine that water is flowing across the top of the grid, an open site will become full with water when it can be connected by other open sites in an unbroken path to the top of the grid.  The system percolates when an open site on the bottom of the grid can be connected by other open sites in an unbroken path to the top of the grid, such that water will flow freely through the system. This can be best determined using the Union Find algorithm above, by checking to see whether the two sites are connected using the connected function.
+The percolation problem takes a grid of sites that can be set to either open
+or closed.  If we imagine that water is flowing across the top of the grid, an
+open site will become full with water when it can be connected by other open
+sites in an unbroken path to the top of the grid.  The system percolates when
+an open site on the bottom of the grid can be connected by other open sites in
+an unbroken path to the top of the grid, such that water will flow freely
+through the system. This can be best determined using the Union Find algorithm
+above, by checking to see whether the two sites are connected using the
+connected function.
 
-For a large square grid of sites, there exists a percolation threshold probability p such that if we open fewer than p percent of the sites the system will not percolate, and if we open greater than p percent of the sites the system will percolate.  An exact expression for the percolation threshold of a square grid is currently unknown, but we can use experimentation to approximate the value as 0.592746.  That is, for a large square grid, the system should first percolate after we have opened 59.2746% of the sites.
-	
-Note that the Union Find implementation is efficient for determining whether 2 sites are connected, but this still requires N^2 time if we need to check whether any of the N sites in the top row are connected to any of the N sites in the bottom row.  To address this, we create two "virtual sites" on the top and bottom of the grid which we automatically connect sites on the top and bottom rows as they open.  Then, to determine whether the system percolates we can simply check whether the top and bottom virtual sites are connected using the efficient union find algorithm.
-	
+For a large square grid of sites, there exists a percolation threshold
+probability p such that if we open fewer than p percent of the sites the
+system will not percolate, and if we open greater than p percent of the sites
+the system will percolate.  An exact expression for the percolation threshold
+of a square grid is currently unknown, but we can use experimentation to
+approximate the value as 0.592746.  That is, for a large square grid, the
+system should first percolate after we have opened 59.2746% of the sites.
+    
+Note that the Union Find implementation is efficient for determining whether 2
+sites are connected, but this still requires N^2 time if we need to check
+whether any of the N sites in the top row are connected to any of the N sites
+in the bottom row.  To address this, we create two "virtual sites" on the top
+and bottom of the grid which we automatically connect sites on the top and
+bottom rows as they open.  Then, to determine whether the system percolates we
+can simply check whether the top and bottom virtual sites are connected using
+the efficient union find algorithm.
+    
 ##Challenges
 
 ####Creating the Visualization
-Initially I had thought to create the grid of sites using a grid of divs which I would then be able to color according to their status, similar to my previous [Mondrian Painting Project](../Mondrian/mondrian.html "Michael Toth - Piet Mondrian Painting").  I wanted to support the ability to change the size of the grid however, and a large number of divs seemed unnecessarily cumbersome.  I did some searching on [Codepen.io](http://codepen.io "Codepen") for ideas, and found some examples using the HTML5 canvas element, which was exactly what I needed.  I enjoyed experimenting and figuring out what worked here.
+Initially I had thought to create the grid of sites using a grid of divs which
+I would then be able to color according to their status, similar to my
+previous [Mondrian Painting Project](../Mondrian/mondrian.html "Michael Toth -
+Piet Mondrian Painting").  I wanted to support the ability to change the size
+of the grid however, and a large number of divs seemed unnecessarily
+cumbersome.  I did some searching on [Codepen.io](http://codepen.io "Codepen")
+for ideas, and found some examples using the HTML5 canvas element, which was
+exactly what I needed.  I enjoyed experimenting and figuring out what worked
+here.
 
 ####Converting Implementation from Java
-I had trouble initially with porting the Java code to Javascript.  In Java, the well-defined class relationships were clear to me, but I did not at first understand how to implement similar in Javascript.  I later found that Javascript functions could have similar functionality to Java classes, and was able to use this knowledge to port my code.
+I had trouble initially with porting the Java code to Javascript.  In Java,
+the well-defined class relationships were clear to me, but I did not at first
+understand how to implement similar in Javascript.  I later found that
+Javascript functions could have similar functionality to Java classes, and was
+able to use this knowledge to port my code.
+
+####Bug when performing multiple runs
+My first implementation suffered from a bug where if I reran the simulation,
+the first percolation run would continue to run in the background, causing
+issues with the display and text output to the screen.  I knew that the
+solution would be to clear the interval on rerun, but I did not know how I
+could access the id of setInterval, an instance variable of the previous
+simulatePercolation class instance, when creating a new instance of the
+percolation class.  After some experimentation, I found that if I declared the
+interval variable in the head of my HTML, I could assign it to setInterval
+when running simulatePercolation, which would eliminate the possibility of
+duplicate intervals running simultaneously.  
 
 ####Iteratively Opening Sites and Drawing
-Initially I implemented the process of opening sites and drawing to the screen using a while loop, but this was not ideal.  I could run the entire percolation simulation and then draw to the screen, but if I tried drawing to the screen after each site was opened, the browser would freeze.  I wanted to be able to show each site being opened successively, so I needed to find a way to delay the opening of new sites until I could draw to the screen.  I ended up accomplishing this through the use of Javascript's setInterval method.  Ultimately, I added 3 options for timing.  Show code:
+Initially I implemented the process of opening sites and drawing to the screen
+using a while loop, but this was not ideal.  I could run the entire
+percolation simulation and then draw to the screen, but if I tried drawing to
+the screen after each site was opened, the browser would freeze.  I wanted to
+be able to show each site being opened successively, so I needed to find a way
+to delay the opening of new sites until I could draw to the screen.  I ended
+up accomplishing this through the use of Javascript's setInterval method.
+Ultimately, I added 3 options for timing.  Show code:
 
 ```javascript
 // Runs a while loop until system percolates then outputs to screen
@@ -125,4 +197,4 @@ if (delay === 0) {
 }
 ```
 
-My first implementation suffered from a bug where if I reran the simulation, the first percolation run would continue to run in the background, causing issues with the display and text output to the screen.  I knew that the solution would be to clear the interval on rerun, but I did not know how I could access the id of setInterval, an instance variable of the previous simulatePercolation class instance, when creating a new instance of the percolation class.  After some experimentation, I found that if I declared the interval variable in the head of my HTML, I could assign it to setInterval when running simulatePercolation, which would eliminate the possibility of duplicate intervals running simultaneously.  
+

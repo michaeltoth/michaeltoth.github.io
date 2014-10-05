@@ -22,13 +22,13 @@ theory and the union find algorithm in particular.
 ##Background
 
 I first became interested in the percolation problem and the union find
-algorithm during Robert Sedgwick's and Kevin Wayne's
+algorithm while enrolled in Robert Sedgwick's and Kevin Wayne's
 [Algorithms](https://www.coursera.org/course/algs4partI "Coursera -
-Algorithms") class on Coursera.  In the class I implemented a Java solution,
+Algorithms") class on Coursera.  In the class I implemented a solution in Java,
 and afterward I thought that it would be an interesting challenge to port that
-solution to Javascript and create a visualization on my website.  I use
-Javascript for all of the calculations for the web version,  and I use the
-HTML canvas element to draw the visualization to the screen iteratively.
+solution to Javascript and create a visualization on my website.  For the web
+version I use Javascript for all of the calculations,  and I use the HTML canvas 
+element to draw the visualization to the screen.
 
 #### Connectivity and the Union Find Algorithm
 
@@ -40,25 +40,38 @@ whether two particular sites are connected via any path.  For example:
 For a small set of sites such as the one above, a brute force approach of
 checking a site and all of its neighbors to see whether such a path exists
 would work fine.  As the number of sites grows large however, this algorithm
-does not scale well, and we need a better solution.  Instead of thinking of
+does not scale, and we need a better solution.  Instead of thinking of
 the grid of sites as a directed graph, we can convey the same information as a
-grouping of components as follows:
+grouping of components as seen in the image below.  Now, determining whether any
+two sites are connected is as simple as checking whether they are both members of 
+the same component.
 
 <Show a graphic here of connected components>
 
-The Union Find data structure keeps track of a set of elements partitioned
-into a number of disjoint subsets (components).  A union find structure of
-size N is initialized with N disjoint components, and the data structure
-supports two main operations:
+The Union Find data structure, sometimes called a disjoint set data structure or
+a merge-find set, allows for high performance operations on a component grouping 
+as described above.  The Union Find data structure keeps track of a set of 
+elements partitioned into a number of disjoint subsets (components).  A union 
+find structure of size N is initialized with N disjoint components, and the data 
+structure supports two main operations:
 
 Find: Return the id of the component to which the given site is a member
 Union: Connect two sites by combining their two components into a single
 component with the same id
 
-The find function takes constant time.  By modifying the union function such
-that we always append the smaller component to the larger component, we reduce
-the maximum depth of the tree and ensure that the algorithm takes O(n*log(n))
-in the worst case.  // Include proof based on doubling
+A new Union Find data structure of size N is initialized with N distinct
+components.  Calls to the Union operation create a tree of components such
+that when two sets are combined, the members of one set will point to those
+of the other set.  The find operation then traverses to the top of the tree
+to find the root member, which I have labeled as the "id" of the component.
+In this implementation, the find operation takes time proportional to the 
+depth of the tree.  A naive implementation of the union operation could allow
+trees to potentially become very deep, which would slow the performance of this
+algorithm.  Instead, if we modify the union function such that we always append
+the smaller component to the larger component, we reduce the maximum depth of 
+the tree and ensure that the algorithm takes O(n*log(n)) in the worst case.  
+
+// Include proof based on doubling
 
 Code for Union Find implementation in Javascript:
 

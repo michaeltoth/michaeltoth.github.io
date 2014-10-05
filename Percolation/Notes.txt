@@ -140,26 +140,30 @@ open site will become full with water when it can be connected by other open
 sites in an unbroken path to the top of the grid.  The system percolates when
 an open site on the bottom of the grid can be connected by other open sites in
 an unbroken path to the top of the grid, such that water will flow freely
-through the system. This can be best determined using the Union Find algorithm
-above, by checking to see whether the two sites are connected using the
-connected function.
+through the system. 
 
+*Modeling percolation with the Union-Find algorithm*
+The Union Find implementation is efficient for determining whether any 2
+sites are connected, but this structure would require N^2 time to check whether 
+any of the N sites in the top row is connected to any of the N  sites in the 
+bottom row.  Similarly, this structure would require time proportional to N 
+to determine whether a given site is full (i.e. whether it is connected to any 
+of the N top row sites).  
+
+To address this, we create two "virtual sites" on the top and bottom of the 
+grid which we automatically connect sites on the top and bottom rows as they 
+open.  To determine if a site is full, we check whether it is connected to the
+top virtual site.  To determine whether the system percolates we check whether 
+the top and bottom virtual sites are connected.
+
+*Interesting aside*  
 For a large square grid of sites, there exists a percolation threshold
 probability p such that if we open fewer than p percent of the sites the
 system will not percolate, and if we open greater than p percent of the sites
 the system will percolate.  An exact expression for the percolation threshold
-of a square grid is currently unknown, but we can use experimentation to
-approximate the value as 0.592746.  That is, for a large square grid, the
+of a square grid is currently unknown, but through experimentation we know the
+value to be approximately 0.592746.  That is, for a large square grid, the
 system should first percolate after we have opened 59.2746% of the sites.
-    
-Note that the Union Find implementation is efficient for determining whether 2
-sites are connected, but this still requires N^2 time if we need to check
-whether any of the N sites in the top row are connected to any of the N sites
-in the bottom row.  To address this, we create two "virtual sites" on the top
-and bottom of the grid which we automatically connect sites on the top and
-bottom rows as they open.  Then, to determine whether the system percolates we
-can simply check whether the top and bottom virtual sites are connected using
-the efficient union find algorithm.
     
 ##Challenges
 

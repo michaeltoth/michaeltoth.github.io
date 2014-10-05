@@ -165,7 +165,7 @@ of a square grid is currently unknown, but through experimentation we know the
 value to be approximately 0.592746.  That is, for a large square grid, the
 system should first percolate after we have opened 59.2746% of the sites.
     
-##Challenges
+##Challenges in my Implementation
 
 ####Creating the Visualization
 Initially I had thought to create the grid of sites using a grid of divs which
@@ -175,27 +175,18 @@ Piet Mondrian Painting").  I wanted to support the ability to change the size
 of the grid however, and a large number of divs seemed unnecessarily
 cumbersome.  I did some searching on [Codepen.io](http://codepen.io "Codepen")
 for ideas, and found some examples using the HTML5 canvas element, which was
-exactly what I needed.  I enjoyed experimenting and figuring out what worked
-here.
+exactly what I needed.  I got to learn some new things about the HTML canvas 
+and how it worked, and this was a fun part of the project.
 
 ####Converting Implementation from Java
 I had trouble initially with porting the Java code to Javascript.  In Java,
 the well-defined class relationships were clear to me, but I did not at first
-understand how to implement similar in Javascript.  I later found that
-Javascript functions could have similar functionality to Java classes, and was
-able to use this knowledge to port my code.
-
-####Bug when performing multiple runs
-My first implementation suffered from a bug where if I reran the simulation,
-the first percolation run would continue to run in the background, causing
-issues with the display and text output to the screen.  I knew that the
-solution would be to clear the interval on rerun, but I did not know how I
-could access the id of setInterval, an instance variable of the previous
-simulatePercolation class instance, when creating a new instance of the
-percolation class.  After some experimentation, I found that if I declared the
-interval variable in the head of my HTML, I could assign it to setInterval
-when running simulatePercolation, which would eliminate the possibility of
-duplicate intervals running simultaneously.  
+understand how to implement similar in Javascript.  I found that there were 
+many ways in Javascript to accomplish a similar thing, and I ultimately used
+functions to accomplish this as they were most syntactically similar and I found
+this approach easiest to understand.  I am still working to understand some 
+aspects of Javascript, but this project helped my greatly with learning about 
+how to modularize my code.
 
 ####Iteratively Opening Sites and Drawing
 Initially I implemented the process of opening sites and drawing to the screen
@@ -205,26 +196,41 @@ the screen after each site was opened, the browser would freeze.  I wanted to
 be able to show each site being opened successively, so I needed to find a way
 to delay the opening of new sites until I could draw to the screen.  I ended
 up accomplishing this through the use of Javascript's setInterval method.
-Ultimately, I added 3 options for timing.  Show code:
+Ultimately, I added 3 options for timing, one to draw instantly and two
+to open sites iteratively at varying speeds.  The timing is controlled by
+the code shown below:
 
 ```javascript
-// Runs a while loop until system percolates then outputs to screen
 function outputInstantly() {
+    // While loop runs until the system percolates
     while (!perc.percolates()) {
         openRandom();
         count++;
     }
+    // Once the system percolates, draw to the screen a single time
     drawPerc.drawGrid();
 }
 
-// If no delay, draw instantly.  Otherwise, draw with setInterval and delay
+// The user controls delay variable by selecting radio buttons on the page
 if (delay === 0) {
     outputInstantly();
 } else {
-    // Repeatedly call checkPerc to open one-by-one until system percolates 
+    // Use the setInterval function to repeatedly open sites and draw to screen
     interval = setInterval(checkPerc, delay);
     interval();
 }
 ```
+
+####Bug when running multiple calculations simultaneously
+My initial implementation suffered from a bug where if I reran the simulation,
+the first percolation run would continue to run in the background, causing
+issues with the display and text output to the screen.  I knew that the
+solution would be to clear the interval on rerun, but I did not know how I
+could access the id of setInterval, an instance variable of the previous
+simulatePercolation instance, when creating a new instance of percolation.  
+After some experimentation, I found that if I declared the interval variable 
+in the head of my HTML, I could assign it to setInterval when running 
+simulatePercolation, which would eliminate the possibility of duplicate 
+intervals running simultaneously, and correct the issues that I had been facing.
 
 

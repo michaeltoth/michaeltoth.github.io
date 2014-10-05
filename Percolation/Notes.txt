@@ -5,18 +5,19 @@ Modified: 2014-10-01 21:50
 Category: Projects
 Tags: Javascript, Canvas, Projects
 Slug: Percolation
-Summary: The goal of this article is to discuss the background of the
-percolation visualization page, and the details of my implementation. This is
+Summary: In this post I will discuss the background and formulation of the
+percolation visualization page and the details of my implementation. This is
 the first non-trivial Javascript application I've created, and later in the
-post I discuss some of the biggest challenges I faced and things I learned
-along the way.  I hope to provide a good introduction to basic percolation
+post I will discuss some of the biggest challenges I faced and things I learned
+along the way.  I hope to provide a good introduction to percolation
 theory and the union find algorithm in particular.
 
-The goal of this article is to discuss the background of the percolation
-visualization page, and the details of my implementation. This is the first
-non-trivial Javascript application I've created, and later in the post I discuss some of
-the biggest challenges I faced and things I learned along the way.  I hope to provide a
-good introduction to basic percolation theory and the union find algorithm in particular.
+In this post I will discuss the background and formulation of the
+percolation visualization page and the details of my implementation. This is
+the first non-trivial Javascript application I've created, and later in the
+post I will discuss some of the biggest challenges I faced and things I learned
+along the way.  I hope to provide a good introduction to percolation
+theory and the union find algorithm in particular.
 
 ##Background
 

@@ -69,11 +69,23 @@ depth of the tree.  A naive implementation of the union operation could allow
 trees to potentially become very deep, which would slow the performance of this
 algorithm.  Instead, if we modify the union function such that we always append
 the smaller component to the larger component, we reduce the maximum depth of 
-the tree and ensure that the algorithm takes O(n*log(n)) in the worst case.  
+the tree and ensure that the algorithm takes O(nlg(n)) in the worst case.  
 
-// Include proof based on doubling
+*Abbreviated Proof*:  
+- Note: lg = log base 2  
+- Given a node x, its depth in the tree will increase by 1 when its tree T1 
+is merged into another tree T2.  
+- When this happens, the size of x's tree will at least double, because our 
+union operation requires size(T2) > size(T1) for T1 to point to T2.  
+- Through any number of union operations, the size of x's tree can double at
+most lg(N) times [ lg(2^N) = N ], the total number of nodes.  
+- *Therefore*: Traversals take O(nlg(n)) in the worst case  
 
-Code for Union Find implementation in Javascript:
+Below I have included my complete Javascript code for the Union Find data 
+structure.  This code is essentially the same as the Java code presented in 
+the Coursera class mentioned above.  In this implementation I include two new
+operations: a connected operation that returns true if two sites are connected 
+and a count variable that returns the number of unique components.
 
 ```javascript
 // Union find implementation for efficient checking of percolation

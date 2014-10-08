@@ -13,18 +13,19 @@ along the way.  I hope to provide a good introduction to percolation
 theory and the union find algorithm in particular.
 
 In this post I will discuss the background and formulation of the
-percolation visualization page and the details of my implementation. This is
-the first non-trivial Javascript application I've created, and later in the
-post I will discuss some of the biggest challenges I faced and things I learned
-along the way.  I hope to provide a good introduction to percolation
-theory and the union find algorithm in particular.
+percolation visualization page and the details of my implementation. I hope 
+to provide a good introduction to percolation theory and the union find 
+algorithm in particular.  This is the first non-trivial Javascript application 
+I've created, and later in the post I will be discussing some of the biggest 
+challenges I faced and things I learned along the way.  
+
 
 ##Background
 
-I first became interested in the percolation problem and the union find
-algorithm while enrolled in Robert Sedgwick's and Kevin Wayne's
-[Algorithms](https://www.coursera.org/course/algs4partI "Coursera -
-Algorithms") class on Coursera.  In the class I implemented a solution in Java,
+The inspiration and conceptualization for this project came directly from the
+similar programming assignment in Robert Sedgwick's and Kevin Wayne's
+[Algorithms class](https://www.coursera.org/course/algs4partI "Coursera -
+Algorithms") on Coursera.  In the class I implemented a solution in Java,
 and afterward I thought that it would be an interesting challenge to port that
 solution to Javascript and create a visualization on my website.  For the web
 version I use Javascript for all of the calculations,  and I use the HTML canvas 
@@ -33,7 +34,7 @@ element to draw the visualization to the screen.
 #### Connectivity and the Union Find Algorithm
 
 A connectivity problem seeks to determine, given a directed graph of sites,
-whether two particular sites are connected via any path.  For example:
+whether two sites are connected via any path.  For example:
 
 <Show a graphic here of connected sites>
 
@@ -55,9 +56,9 @@ elements partitioned into a number of disjoint subsets (components).  A union
 find structure of size N is initialized with N disjoint components, and the data 
 structure supports two main operations:
 
-Find: Return the id of the component to which the given site is a member
+Find: Return the id of the component to which the given site is a member  
 Union: Connect two sites by combining their two components into a single
-component with the same id
+component with the same id  
 
 A new Union Find data structure of size N is initialized with N distinct
 components.  Calls to the Union operation create a tree of components such
@@ -83,7 +84,7 @@ most lg(N) times [ lg(2^N) = N ], the total number of nodes.
 
 Below I have included my complete Javascript code for the Union Find data 
 structure.  This code is essentially the same as the Java code presented in 
-the Coursera class mentioned above.  In this implementation I include two new
+the Coursera class mentioned above.  In this implementation we include two new
 operations: a connected operation that returns true if two sites are connected 
 and a count variable that returns the number of unique components.
 

@@ -97,7 +97,7 @@ function WeightedQuickUnionUF(N) {
     var sz = []; 
     for (var i = 0; i < N; i++) {
         id[i] = i; // id[i] = parent of i
-        sz[i] = 1; // sz[i] = number of objects in subtree rooted at i
+        sz[i] = 1; // sz[i] = number of objects in subtree with root i
     }
 
     // Returns the number of components, which starts at N
@@ -122,7 +122,7 @@ function WeightedQuickUnionUF(N) {
         var rootQ = this.find(q);
         if (rootP === rootQ) { return; }
         
-        // make smaller root point to large one
+        // make smaller tree point to larger one
         if (sz[rootP] < sz[rootQ]) {
             id[rootP] = rootQ; sz[rootQ] += sz[rootP];
         } else {
@@ -135,7 +135,7 @@ function WeightedQuickUnionUF(N) {
 
 ####Percolation
 
-The percolation problem takes a grid of sites that can be set to either open
+The percolation problem assumes a grid of sites that can be set to either open
 or closed.  If we imagine that water is flowing across the top of the grid, an
 open site will become full with water when it can be connected by other open
 sites in an unbroken path to the top of the grid.  The system percolates when
@@ -147,15 +147,16 @@ through the system.
 The Union Find implementation is efficient for determining whether any 2
 sites are connected, but this structure would require N^2 time to check whether 
 any of the N sites in the top row is connected to any of the N  sites in the 
-bottom row.  Similarly, this structure would require time proportional to N 
-to determine whether a given site is full (i.e. whether it is connected to any 
-of the N top row sites).  
+bottom row of the percolation grid.  Similarly, this structure would require 
+time proportional to N to determine whether a given site is full (i.e. whether 
+it is connected to any of the N top row sites).  
 
-To address this, we create two "virtual sites" on the top and bottom of the 
-grid which we automatically connect sites on the top and bottom rows as they 
-open.  To determine if a site is full, we check whether it is connected to the
-top virtual site.  To determine whether the system percolates we check whether 
-the top and bottom virtual sites are connected.
+To address these issues, we create two "virtual sites" on the top and bottom 
+of the grid. We automatically connect these virtual sites to sites  on the 
+top and bottom rows as they are opened.  To determine whether a site is full, 
+we check whether it is connected to the top virtual site.  To determine 
+whether the system percolates we check whether the top and bottom virtual 
+sites are connected.
 
 *Interesting aside*  
 For a large square grid of sites, there exists a percolation threshold
@@ -235,3 +236,6 @@ simulatePercolation, which would eliminate the possibility of duplicate
 intervals running simultaneously, and correct the issues that I had been facing.
 
 
+You can find the full code for my percolation visualization available on my Github:
+[Percolation](https://github.com/michaeltoth/michaeltoth.github.io/tree/master/Percolation 
+"Percolation")

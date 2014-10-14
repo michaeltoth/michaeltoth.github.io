@@ -34,20 +34,22 @@ element to draw the visualization to the screen.
 #### Connectivity and the Union Find Algorithm
 
 A connectivity problem seeks to determine, given a directed graph of sites,
-whether two sites are connected via any path.  For example:
+whether two sites are connected via any path:
 
-<Show a graphic here of connected sites>
+![Connected Sites](www.michaeltoth.net/Percolation/connected.jpg)
 
-For a small set of sites such as the one above, a brute force approach of
-checking a site and all of its neighbors to see whether such a path exists
-would work fine.  As the number of sites grows large however, this algorithm
-does not scale, and we need a better solution.  Instead of thinking of
+For a small set of sites such as the one above, a brute force approach would
+would solve the problem effectively.  If we wanted to see whether site 2 was
+connected to site 8, we could perhaps use recursion to ultimately determine
+that they are connected.  As the number of sites grows large however, this
+method does not scale, and we need a better solution.  Instead of thinking of
 the grid of sites as a directed graph, we can convey the same information as a
 grouping of components as seen in the image below.  Now, determining whether any
 two sites are connected is as simple as checking whether they are both members of 
-the same component.
+the same component.  Connecting sites now involves merging components rather than
+drawing paths.
 
-<Show a graphic here of connected components>
+~[Connected Components](www.michaeltoth.net/Percolation/connectedcomponents.png)
 
 The Union Find data structure, sometimes called a disjoint set data structure or
 a merge-find set, allows for high performance operations on a component grouping 

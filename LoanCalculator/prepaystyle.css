@@ -18,15 +18,25 @@ body {
     overflow: hidden;
 }
 
-.header h2 {
+.header h1 {
 	color: #FFFEF5;
     float: left;
     margin: 0px;
 }
 
+.header #link-home {
+    display: block;
+    float: right;
+    margin-top: 0px;
+    margin-bottom: 10px;
+}
+
+.header p {
+    color: white;
+    margin: 0px;
+}
+
 .header a {
-	float: right;
-	margin-top: 5px;
 	color: #B8B7B1;
 }
 

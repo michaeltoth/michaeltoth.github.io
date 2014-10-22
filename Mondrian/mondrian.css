@@ -75,12 +75,16 @@ h1 {
 .header .header-text {
     display: block;
     float: left;
+    margin-top: 2px;
 }
 
 .header #link-home {
-    margin-top: 10px;
     display: block;
     float: right;
+}
+
+#link-home p {
+    margin: 0px;
 }
 
 .contents a {
